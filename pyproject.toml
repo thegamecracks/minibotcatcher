@@ -28,6 +28,7 @@ classifiers = [
 ]
 dependencies = [
     "discord.py~=2.7",
+    "python-dotenv~=1.2",
 ]
 
 [dependency-groups]
