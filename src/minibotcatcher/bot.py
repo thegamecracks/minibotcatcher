@@ -61,6 +61,7 @@ class Bot(commands.Bot):
                 attach_files=True,
                 # Dangerous permissions
                 manage_messages=True,
+                mention_everyone=True,
                 moderate_members=True,
             ),
         )
