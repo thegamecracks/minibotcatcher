@@ -1,0 +1,43 @@
+[build-system]
+requires = ["uv-build~=0.11.26"]
+build-backend = "uv_build"
+
+[project]
+name = "minibotcatcher"
+version = "0.1.0"
+description = "A small Discord bot to catch specific spam bots."
+readme = "README.md"
+requires-python = ">=3.14"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "thegamecracks" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Private :: Do Not Upload",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications",
+    "Topic :: Communications :: Chat",
+    "Topic :: Internet",
+    "Typing :: Typed",
+]
+dependencies = [
+    "discord.py~=2.7",
+]
+
+[dependency-groups]
+dev = ["jishaku~=2.6"]
+
+[project.scripts]
+minibotcatcher = "minibotcatcher.__main__:main"
+
+[project.urls]
+# https://packaging.python.org/en/latest/specifications/well-known-project-urls/#well-known-labels
+Homepage = "https://github.com/thegamecracks/minibotcatcher"
+GitHub = "https://github.com/thegamecracks/minibotcatcher"
+Issues = "https://github.com/thegamecracks/minibotcatcher/issues"
