@@ -36,6 +36,7 @@ class Bot(commands.Bot):
             sys.exit(1)
 
     async def setup_hook(self) -> None:
+        await self.load_extension("minibotcatcher.antispam")
         await self._maybe_load_jishaku()
 
         invite_link = self.get_standard_invite()
