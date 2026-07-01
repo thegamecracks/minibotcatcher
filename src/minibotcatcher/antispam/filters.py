@@ -177,7 +177,7 @@ def check_burst_spam(
     return SpamDetection(
         author=context.author,
         messages=messages,
-        reason="burst spam - sent {len(messages)} messages",
+        reason=f"burst spam - sent {len(messages)} messages",
     )
 
 
