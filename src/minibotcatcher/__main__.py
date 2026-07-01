@@ -2,8 +2,11 @@ import os
 import re
 import sys
 
+from dotenv import load_dotenv
+
 
 def main() -> None:
+    load_dotenv()
     token = read_token()
 
     from minibotcatcher.bot import Bot  # defer discord.py import
