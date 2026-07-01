@@ -92,6 +92,8 @@ class AntiSpam(commands.Cog):
             return True
         elif author.guild_permissions & ADMIN_PERMISSIONS:
             return True
+        elif author.bot:
+            return True
         return False
 
     async def take_action_on_detection(self, detection: SpamDetection) -> None:
