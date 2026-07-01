@@ -12,7 +12,7 @@ def main() -> None:
     from minibotcatcher.bot import Bot  # defer discord.py import
 
     bot = Bot()
-    bot.run(token)
+    bot.run(token, root_logger=True)
 
 
 def read_token() -> str:
