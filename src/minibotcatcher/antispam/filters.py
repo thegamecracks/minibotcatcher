@@ -215,7 +215,9 @@ def check_mention_spam(
 
 def _message_contains_any_mention(message: discord.Message) -> int:
     return (
-        any(user for user in message.mentions if not user.bot and user != message.author)
+        any(
+            user for user in message.mentions if not user.bot and user != message.author
+        )
         or any(role for role in message.role_mentions if role.mentionable)
         or "@everyone" in message.content
         or "@here" in message.content
