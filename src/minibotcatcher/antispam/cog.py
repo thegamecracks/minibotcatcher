@@ -142,16 +142,17 @@ class AntiSpam(commands.Cog):
                 f"⚠️ {mention} triggered a spam filter (reason: {detection.reason})."
             )
 
-        mod_role = self.get_mod_role(detection.guild)
-        if mod_role is not None:
-            has = "has" if not mod_role.name.endswith("s") else "have"
-            content.append("")
-            content.append(f"The {mod_role.mention} {has} been alerted for review.")
+        mod_mention = self.get_mod_mention(detection.guild)
+        content.append("")
+        content.append(f"Alerting {mod_mention} for review.")
 
         log.info("Sending audit message to %s", channel)
         await channel.send(
             "\n".join(content),
-            allowed_mentions=discord.AllowedMentions(everyone=False, users=False),
+            allowed_mentions=discord.AllowedMentions(
+                everyone=False,
+                users=not mod_mention.startswith("<@&"),
+            ),
         )
 
     async def delete_offending_messages(self, detection: SpamDetection) -> None:
@@ -167,5 +168,8 @@ class AntiSpam(commands.Cog):
         for message in deleteable:
             await message.delete(delay=0)
 
-    def get_mod_role(self, guild: discord.Guild) -> discord.Role | None:
-        return discord.utils.find(_is_mod_role, guild.roles)
+    def get_mod_mention(self, guild: discord.Guild) -> str:
+        role = discord.utils.find(_is_mod_role, guild.roles)
+        if role is not None:
+            return role.mention
+        return f"<@{guild.owner_id}>"
