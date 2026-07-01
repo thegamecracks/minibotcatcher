@@ -69,11 +69,7 @@ class AntiSpam(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def apply_spam_filters(self, message: discord.Message) -> None:
-        if message.guild is None:
-            return
-
-        assert isinstance(message.author, discord.Member)
-        if self.is_admin(message.author):
+        if not self.can_moderate_message(message):
             return
 
         context = self.context_cache.get(message)
@@ -87,14 +83,23 @@ class AntiSpam(commands.Cog):
                 self.context_cache.pop(message)
                 return
 
-    def is_admin(self, author: discord.Member) -> bool:
-        if author.top_role >= author.guild.me.top_role:
-            return True
+    def can_moderate_message(self, message: discord.Message) -> bool:
+        if message.guild is None:
+            return False
+        elif message.webhook_id is not None:
+            return False  # came from a webhook
+
+        assert isinstance(message.author, discord.Member)
+        author = message.author
+
+        if author.bot or author.system:
+            return False
+        elif author.top_role >= author.guild.me.top_role:
+            return False
         elif author.guild_permissions & ADMIN_PERMISSIONS:
-            return True
-        elif author.bot or author.system:
-            return True
-        return False
+            return False
+
+        return True
 
     async def take_action_on_detection(self, detection: SpamDetection) -> None:
         timed_out_until = await self.timeout_offender(detection)
