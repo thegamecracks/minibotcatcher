@@ -109,12 +109,7 @@ class AntiSpam(commands.Cog):
 
         duration = datetime.timedelta(minutes=10)
         timed_out_until = discord.utils.utcnow() + duration
-        log.info(
-            "Timing out %s-%s for %s",
-            detection.guild.id,
-            detection.author.id,
-            duration,
-        )
+        log.info("Timing out %s for %s", detection.author, duration)
         await detection.author.timeout(timed_out_until, reason=detection.reason)
         return timed_out_until
 
@@ -148,7 +143,7 @@ class AntiSpam(commands.Cog):
             content.append("")
             content.append(f"The {mod_role.mention} {has} been alerted for review.")
 
-        log.info("Sending audit message to %s-%s", detection.guild.id, channel.id)
+        log.info("Sending audit message to %s", channel)
         await channel.send(
             "\n".join(content),
             allowed_mentions=discord.AllowedMentions(everyone=False, users=False),
@@ -163,12 +158,7 @@ class AntiSpam(commands.Cog):
         if not deleteable:
             return
 
-        log.info(
-            "Deleting %d messages from %s-%s",
-            len(deleteable),
-            detection.guild.id,
-            detection.author.id,
-        )
+        log.info("Deleting %d messages from %s", len(deleteable), detection.author)
         for message in deleteable:
             await message.delete(delay=0)
 

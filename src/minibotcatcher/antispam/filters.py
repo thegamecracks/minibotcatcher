@@ -166,10 +166,9 @@ def check_burst_spam(
         return
 
     log.info(
-        "Detected burst message spam: %s-%s sent %d messages in %d channels "
+        "Detected burst message spam: %s sent %d messages in %d channels "
         "within a period of %s",
-        context.guild.id,
-        context.author.id,
+        context.author,
         len(messages),
         len(unique_channels),
         period,
@@ -201,10 +200,9 @@ def check_mention_spam(
         return
 
     log.info(
-        "Detected mention spam: %s-%s used mentions across %d messages "
+        "Detected mention spam: %s used mentions across %d messages "
         "within a period of %s",
-        context.guild.id,
-        context.author.id,
+        context.author,
         len(messages),
         period,
     )
