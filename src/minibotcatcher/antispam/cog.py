@@ -92,7 +92,7 @@ class AntiSpam(commands.Cog):
             return True
         elif author.guild_permissions & ADMIN_PERMISSIONS:
             return True
-        elif author.bot:
+        elif author.bot or author.system:
             return True
         return False
 
