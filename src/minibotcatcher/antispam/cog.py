@@ -62,6 +62,7 @@ def _is_mod_role(role: discord.Role) -> bool:
         and bool(
             role.permissions
             & discord.Permissions(
+                administrator=True,
                 kick_members=True,
                 ban_members=True,
             )
