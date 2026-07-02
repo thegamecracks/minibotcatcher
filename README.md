@@ -6,6 +6,8 @@
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-check.yml?style=flat-square&logo=ruff&label=lints)](https://docs.astral.sh/ruff/)
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-format.yml?style=flat-square&logo=ruff&label=style)](https://docs.astral.sh/ruff/)
 
+![Demonstration image](https://github.com/thegamecracks/minibotcatcher/blob/main/docs/images/demo.png)
+
 A small Discord bot to catch specific spam bots.
 
 ## Table of Contents
