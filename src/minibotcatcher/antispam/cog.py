@@ -14,6 +14,7 @@ from .filters import (
     SpamContext,
     SpamContextCache,
     SpamDetection,
+    check_burst_spam,
     check_channel_spam,
     check_mention_spam,
 )
@@ -70,6 +71,7 @@ class AntiSpam(commands.Cog):
             message_period=datetime.timedelta(minutes=10),
         )
         self.filters = [
+            check_burst_spam,
             check_channel_spam,
             check_mention_spam,
         ]

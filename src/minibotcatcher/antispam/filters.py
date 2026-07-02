@@ -150,6 +150,31 @@ def _can_send_in_channel(channel: discord.abc.MessageableChannel) -> bool:
     return channel.permissions_for(channel.guild.me).send_messages
 
 
+def check_burst_spam(
+    context: SpamContext,
+    *,
+    message_threshold: int = 8,
+    period: datetime.timedelta = datetime.timedelta(seconds=10),
+) -> SpamDetection | None:
+    """Check if an author has sent too many messages in the given period."""
+    after = discord.utils.utcnow() - period
+    messages = context.query_messages(after=after)
+    if len(messages) < message_threshold:
+        return
+
+    log.info(
+        "Detected burst spam: %s sent %d messages within a period of %s",
+        context.author,
+        len(messages),
+        period,
+    )
+    return SpamDetection(
+        author=context.author,
+        messages=messages,
+        reason=f"burst spam - sent {len(messages)} messages",
+    )
+
+
 def check_channel_spam(
     context: SpamContext,
     *,
