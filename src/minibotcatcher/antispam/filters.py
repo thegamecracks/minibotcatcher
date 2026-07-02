@@ -38,7 +38,7 @@ def check_channel_spam(
     context: SpamContext,
     *,
     channel_threshold: int = 4,
-    period: datetime.timedelta = datetime.timedelta(seconds=10),
+    period: datetime.timedelta = datetime.timedelta(seconds=20),
 ) -> SpamDetection | None:
     """Check if an author has sent too many messages across different channels
     in the given period.
