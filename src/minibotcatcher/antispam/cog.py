@@ -126,7 +126,8 @@ class AntiSpam(commands.Cog):
         await self.delete_offending_messages(detection)
 
     async def timeout_offender(
-        self, detection: SpamDetection
+        self,
+        detection: SpamDetection,
     ) -> datetime.datetime | None:
         if SPAM_TIMEOUT_MINUTES < 1:
             return
