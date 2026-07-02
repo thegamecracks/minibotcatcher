@@ -19,7 +19,8 @@ from .filters import (
 )
 
 AUDIT_CHANNELS = [
-    int(m[0]) for m in re.findall(r"\d+", os.getenv("AUDIT_CHANNELS", ""))
+    int(channel_id)
+    for channel_id in re.findall(r"\d+", os.getenv("AUDIT_CHANNELS", ""))
 ]
 ADMIN_PERMISSIONS = discord.Permissions(
     kick_members=True,
