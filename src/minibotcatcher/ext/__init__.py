@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import logging
 import pkgutil
+from typing import TYPE_CHECKING
 
-from minibotcatcher.bot import Bot
+if TYPE_CHECKING:
+    from minibotcatcher.bot import Bot
 
 log = logging.getLogger(__name__)
 
