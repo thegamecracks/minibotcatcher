@@ -6,7 +6,7 @@ from contextlib import suppress
 import discord
 from discord.ext import commands
 
-from . import __version__
+from . import __version__, ext
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ class Bot(commands.Bot):
 
     async def setup_hook(self) -> None:
         log.info("Running version: v%s", __version__)
-        await self.load_extension("minibotcatcher.antispam")
+        await ext.load_extensions(self)
         await self._maybe_load_jishaku()
 
         invite_link = self.get_standard_invite()
