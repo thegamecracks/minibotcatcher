@@ -6,7 +6,7 @@
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-check.yml?style=flat-square&logo=ruff&label=lints)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/ruff-check.yml)
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-format.yml?style=flat-square&logo=ruff&label=style)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/ruff-format.yml)
 
-![Demonstration image](https://github.com/thegamecracks/minibotcatcher/blob/main/docs/images/demo.png)
+![Demonstration image](https://raw.githubusercontent.com/thegamecracks/minibotcatcher/refs/heads/main/docs/images/demo.png)
 
 A small Discord bot to catch spam bots.
 
