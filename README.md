@@ -15,7 +15,7 @@ To run the latest image:
 
 ```sh
 $ docker pull ghcr.io/thegamecracks/minibotcatcher
-$ docker run -e BOT_TOKEN=abc123 minibotcatcher
+$ docker run --rm -it -e BOT_TOKEN=abc123 minibotcatcher
 ```
 
 Alternatively, to build images from source:
@@ -24,7 +24,7 @@ Alternatively, to build images from source:
 $ git clone https://github.com/thegamecracks/minibotcatcher
 $ cd minibotcatcher
 $ docker build -t minibotcatcher .
-$ docker run -e BOT_TOKEN=abc123 minibotcatcher
+$ docker run --rm -it -e BOT_TOKEN=abc123 minibotcatcher
 ```
 
 ### Manual setup (python+pip)
