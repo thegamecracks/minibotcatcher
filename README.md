@@ -176,14 +176,14 @@ long-tapping their username.
 
 The following actions can be performed when a bot triggers the spam filter:
 
-1. The offender may be timed out for ten minutes.
+1. The offender may be temporarily timed out from sending messages.
 
-   This action is skipped if the bot does not have the Moderate Members permission.
-
+   By default, the timeout is 5 minutes.
    The `SPAM_TIMEOUT_MINUTES` envvar can be used to change how long
    offenders are timed out for.
-   By default, the timeout is 5 minutes.
    If set to 0, offenders will never be timed out.
+
+   This action is skipped if the bot does not have the Moderate Members permission.
 
 2. The offender may have their offending messages deleted.
 
