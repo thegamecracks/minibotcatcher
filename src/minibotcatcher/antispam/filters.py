@@ -27,12 +27,6 @@ def check_burst_spam(
     if len(messages) < message_threshold:
         return
 
-    log.info(
-        "Detected burst spam: %s sent %d messages within a period of %s",
-        context.author,
-        len(messages),
-        period,
-    )
     return SpamDetection(
         author=context.author,
         messages=messages,
@@ -55,14 +49,6 @@ def check_channel_spam(
     if len(unique_channels) < message_threshold:
         return
 
-    log.info(
-        "Detected channel spam: %s sent %d messages in %d channels "
-        "within a period of %s",
-        context.author,
-        len(messages),
-        len(unique_channels),
-        period,
-    )
     return SpamDetection(
         author=context.author,
         messages=messages,
@@ -89,13 +75,6 @@ def check_mention_spam(
     if len(messages) < message_threshold:
         return
 
-    log.info(
-        "Detected mention spam: %s used mentions across %d messages "
-        "within a period of %s",
-        context.author,
-        len(messages),
-        period,
-    )
     return SpamDetection(
         author=context.author,
         messages=messages,

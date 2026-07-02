@@ -117,6 +117,7 @@ class AntiSpam(commands.Cog):
         return True
 
     async def take_action_on_detection(self, detection: SpamDetection) -> None:
+        log.info("Spam filter triggered - %s - %s", detection.author, detection.reason)
         timed_out_until = await self.timeout_offender(detection)
         await self.send_audit_message(detection, timed_out_until=timed_out_until)
         await self.delete_offending_messages(detection)
