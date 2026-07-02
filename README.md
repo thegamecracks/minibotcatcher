@@ -53,7 +53,6 @@ the setup becomes a bit simpler:
 $ git clone https://github.com/thegamecracks/minibotcatcher
 $ cd minibotcatcher
 $ echo 'BOT_TOKEN=abc123' > .env  # on Windows, add this file by hand
-$ # optional: uv python install 3.14
 $ uv run minibotcatcher
 ```
 
