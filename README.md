@@ -49,6 +49,15 @@ This method will also install development dependencies including
 [jishaku](github.com/scarletcafe/jishaku), an extension that allows
 the bot owner to run arbitrary Python code and other debugging utilities.
 
+## Configuration
+
+The following environment variables are used for configuration:
+
+- `BOT_TOKEN`: the token used to start the bot.
+
+For manual setup, the bot can load environment variables from a `.env` file.
+On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
+
 ## Intents
 
 Before you start the bot, make sure to enable the **Message Content** intent
