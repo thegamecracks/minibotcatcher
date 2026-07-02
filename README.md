@@ -8,6 +8,23 @@
 
 A small Discord bot to catch specific spam bots.
 
+## Table of Contents
+
+- [minibotcatcher](#minibotcatcher)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Docker](#docker)
+    - [Manual setup (python+pip)](#manual-setup-pythonpip)
+    - [Manual setup (uv)](#manual-setup-uv)
+  - [Configuration](#configuration)
+  - [Intents](#intents)
+  - [Usage](#usage)
+    - [Permissions](#permissions)
+    - [Exemptions](#exemptions)
+    - [Filters](#filters)
+    - [Actions](#actions)
+  - [License](#license)
+
 ## Installation
 
 ### Docker
