@@ -214,7 +214,17 @@ class AntiSpam(commands.Cog):
             if channel is None:
                 continue
             elif isinstance(channel, (discord.CategoryChannel, discord.ForumChannel)):
+                log.warning(
+                    "Invalid audit channel, messages not supported: %s (%d)",
+                    channel,
+                    channel.id,
+                )
                 continue
             elif not channel.permissions_for(guild.me).send_messages:
+                log.warning(
+                    "Invalid audit channel, missing Send Messages permission: %s (%d)",
+                    channel,
+                    channel.id,
+                )
                 continue
             return channel
