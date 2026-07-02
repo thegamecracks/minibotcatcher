@@ -137,7 +137,7 @@ class SpamDetection:
         return self.author.guild
 
     @property
-    def audit_channel(self) -> discord.abc.MessageableChannel | None:
+    def recent_channel(self) -> discord.abc.MessageableChannel | None:
         """The channel of the most recent offending message that the bot can send to."""
         return discord.utils.find(
             _can_send_in_channel,

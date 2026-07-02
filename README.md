@@ -54,6 +54,7 @@ the bot owner to run arbitrary Python code and other debugging utilities.
 The following environment variables are used for configuration:
 
 - `BOT_TOKEN`: the token used to start the bot.
+- `AUDIT_CHANNELS`: a comma-separated list of channel IDs for reporting infractions (see [Actions](#actions)).
 
 For manual setup, the bot can load environment variables from a `.env` file.
 On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
@@ -117,6 +118,12 @@ The following actions can be performed when a bot triggers the spam filter:
 3. A message will be sent to the most recent channel indicating the offender,
    infraction reason, any timeout applied, and any mentionable staff role with
    kick or ban permissions.
+
+   The `AUDIT_CHANNELS` envvar can be used to change where the message is sent to.
+   If it specifies a channel ID matching the server where the infraction occured,
+   the message will be sent there instead, along with the most recent offending
+   message forwarded. If multiple channels match, the first available channel
+   will be used.
 
 For (1), this action is skipped if the bot does not have the Moderate Members permission.
 

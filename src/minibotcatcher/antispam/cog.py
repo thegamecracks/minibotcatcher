@@ -1,5 +1,8 @@
 import datetime
 import logging
+import os
+import re
+from contextlib import suppress
 from typing import Callable
 
 import discord
@@ -15,6 +18,9 @@ from .filters import (
     check_mention_spam,
 )
 
+AUDIT_CHANNELS = [
+    int(m[0]) for m in re.findall(r"\d+", os.getenv("AUDIT_CHANNELS", ""))
+]
 ADMIN_PERMISSIONS = discord.Permissions(
     kick_members=True,
     ban_members=True,
@@ -124,7 +130,8 @@ class AntiSpam(commands.Cog):
         *,
         timed_out_until: datetime.datetime | None,
     ) -> None:
-        channel = detection.audit_channel
+        audit_channel = self.get_audit_channel(detection.guild)
+        channel = audit_channel or detection.recent_channel
         if channel is None:
             return
 
@@ -155,6 +162,10 @@ class AntiSpam(commands.Cog):
             ),
         )
 
+        if audit_channel is not None:
+            with suppress(discord.HTTPException):
+                await detection.messages[-1].forward(audit_channel)
+
     async def delete_offending_messages(self, detection: SpamDetection) -> None:
         deleteable = [
             message
@@ -173,3 +184,17 @@ class AntiSpam(commands.Cog):
         if role is not None:
             return role.mention
         return f"<@{guild.owner_id}>"
+
+    def get_audit_channel(
+        self,
+        guild: discord.Guild,
+    ) -> discord.abc.MessageableChannel | None:
+        for channel_id in AUDIT_CHANNELS:
+            channel = guild.get_channel_or_thread(channel_id)
+            if channel is None:
+                continue
+            elif isinstance(channel, (discord.CategoryChannel, discord.ForumChannel)):
+                continue
+            elif not channel.permissions_for(guild.me).send_messages:
+                continue
+            return channel
