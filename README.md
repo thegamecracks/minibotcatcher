@@ -101,6 +101,8 @@ The following environment variables are supported:
 - `SPAM_TIMEOUT_MINUTES`:
   the duration that offenders can be timed out in minutes
   (see [Actions](#actions)).
+- `FORCE_COLOR` or `NO_COLOR`:
+  force ANSI colour logging on or off by setting either variable to `1`.
 
 With manual setup, the bot can automatically load environment variables from a `.env` file.
 On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
