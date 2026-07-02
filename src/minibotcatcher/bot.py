@@ -12,6 +12,7 @@ log = logging.getLogger(__name__)
 class Bot(commands.Bot):
     def __init__(self) -> None:
         super().__init__(
+            activity=discord.Game(f"v{__version__}"),
             command_prefix=commands.when_mentioned,
             help_command=None,
             intents=discord.Intents(
