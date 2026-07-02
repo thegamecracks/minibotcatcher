@@ -62,13 +62,19 @@ the bot owner to run arbitrary Python code and other debugging utilities.
 
 ## Configuration
 
-The following environment variables are used for configuration:
+The following environment variables are supported:
 
-- `BOT_TOKEN`: the token used to start the bot.
-- `AUDIT_CHANNELS`: a comma-separated list of channel IDs for reporting infractions (see [Actions](#actions)).
-- `SPAM_FILTERS`: a comma-separated list of filter names (see [Filters](#filters)).
+- `BOT_TOKEN`:
+  the bot token used to login, retrieved from the
+  [Discord Developer Portal](https://discord.com/developers/applications).
+- `AUDIT_CHANNELS`:
+  a comma-separated list of channel IDs for reporting infractions
+  (see [Actions](#actions)).
+- `SPAM_FILTERS`:
+  a comma-separated list of filter names
+  (see [Filters](#filters)).
 
-For manual setup, the bot can load environment variables from a `.env` file.
+With manual setup, the bot can automatically load environment variables from a `.env` file.
 On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
 
 > [!WARNING]
@@ -110,7 +116,7 @@ Spam filters do not apply to any message that meets any of the following conditi
 - The author has at least one moderation permission (e.g. kick, ban, manage XYZ, mute/deafen/move members, bypass slowmode)
 - The author's highest role exceeds the bot's highest role
 
-The last point actually determines whether Discord will allow the bot to apply
+The last point determines whether the bot is permitted by Discord to apply
 moderation actions, like timing out the member. As such, it is recommended to
 move the bot's role above member/vanity roles, but stay below staff roles.
 
@@ -140,27 +146,29 @@ long-tapping their username.
 The following actions can be performed when a bot triggers the spam filter:
 
 1. The offender may be timed out for ten minutes.
+
+   This action is skipped if the bot does not have the Moderate Members permission.
+
 2. The offender may have their offending messages deleted.
+
+   Only the specific messages that triggered the filter will be deleted.
+   If the bot is not able to delete one or more messages (for example, a channel
+   denies the Manage Messages permission), those messages will be left unaffected.
+
 3. A message will be sent to the most recent channel indicating the offender,
    infraction reason, any timeout applied, and any mentionable staff role with
    kick or ban permissions.
+
+   The role mention is determined by the lowest staff role that is permitted
+   to kick or ban members. The bot must either have the Mention Everyone permission,
+   or the staff role must allow anyone to mention it.
+   If no candidate role is found, the server owner will be mentioned instead.
 
    The `AUDIT_CHANNELS` envvar can be used to change where the message is sent to.
    If it specifies a channel ID matching the server where the infraction occured,
    the message will be sent there instead, along with the most recent offending
    message forwarded. If multiple channels match, the first available channel
    will be used.
-
-For (1), this action is skipped if the bot does not have the Moderate Members permission.
-
-For (2), only the specific messages that triggered the filter will be deleted.
-If the bot is not able to delete one or more messages (for example, a channel
-denies the Manage Messages permission), they will be ignored.
-
-For (3), the lowest staff role that is permitted to kick or ban members is chosen.
-The bot must either have the Mention Everyone permission, or the staff role
-must allow anyone to mention. If no candidate role is found, the server owner
-will be mentioned instead.
 
 ## License
 
