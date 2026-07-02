@@ -25,7 +25,9 @@ SPAM_FILTERS = {
     for name, check in ALL_SPAM_FILTERS.items()
     if not _selected_filters or name in _selected_filters
 }
+SPAM_TIMEOUT_MINUTES = int(os.getenv("SPAM_TIMEOUT_MINUTES", "10"))
 DEBUG_SKIP_ADMIN_CHECK = os.getenv("DEBUG_SKIP_ADMIN_CHECK") == "1"
+
 ADMIN_PERMISSIONS = discord.Permissions(
     kick_members=True,
     ban_members=True,
@@ -125,14 +127,16 @@ class AntiSpam(commands.Cog):
     async def timeout_offender(
         self, detection: SpamDetection
     ) -> datetime.datetime | None:
-        if not detection.guild.me.guild_permissions.moderate_members:
+        if SPAM_TIMEOUT_MINUTES < 1:
+            return
+        elif not detection.guild.me.guild_permissions.moderate_members:
             log.info("Cannot timeout %s, insufficient permissions", detection.author)
             return
         elif detection.author.top_role >= detection.guild.me.top_role:
             log.info("Cannot timeout %s, insufficient role order", detection.author)
             return
 
-        duration = datetime.timedelta(minutes=10)
+        duration = datetime.timedelta(minutes=SPAM_TIMEOUT_MINUTES)
         timed_out_until = discord.utils.utcnow() + duration
         log.info("Timing out %s for %s", detection.author, duration)
         await detection.author.timeout(timed_out_until, reason=detection.reason)

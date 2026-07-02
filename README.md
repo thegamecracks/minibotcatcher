@@ -96,6 +96,9 @@ The following environment variables are supported:
 - `SPAM_FILTERS`:
   a comma-separated list of filter names
   (see [Filters](#filters)).
+- `SPAM_TIMEOUT_MINUTES`:
+  the duration that offenders can be timed out in minutes
+  (see [Actions](#actions)).
 
 With manual setup, the bot can automatically load environment variables from a `.env` file.
 On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
@@ -172,6 +175,10 @@ The following actions can be performed when a bot triggers the spam filter:
 1. The offender may be timed out for ten minutes.
 
    This action is skipped if the bot does not have the Moderate Members permission.
+
+   The `SPAM_TIMEOUT_MINUTES` envvar can be used to change how.
+   By default, the timeout is 10 minutes.
+   If set to 0, offenders will never be timed out.
 
 2. The offender may have their offending messages deleted.
 
