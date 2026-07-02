@@ -6,9 +6,9 @@ on:
       - src/**
       - .dockerignore
       - Dockerfile
-      - LICENSE
+      # - LICENSE
       - pyproject.toml
-      - README.md
+      # - README.md
       - uv.lock
   workflow_dispatch:
 
