@@ -25,6 +25,7 @@ SPAM_FILTERS = {
     for name, check in ALL_SPAM_FILTERS.items()
     if not _selected_filters or name in _selected_filters
 }
+DEBUG_SKIP_ADMIN_CHECK = os.getenv("DEBUG_SKIP_ADMIN_CHECK") == "1"
 ADMIN_PERMISSIONS = discord.Permissions(
     kick_members=True,
     ban_members=True,
@@ -105,6 +106,9 @@ class AntiSpam(commands.Cog):
 
         if author.bot or author.system:
             return False
+
+        if DEBUG_SKIP_ADMIN_CHECK:
+            pass
         elif author.top_role >= author.guild.me.top_role:
             return False
         elif author.guild_permissions & ADMIN_PERMISSIONS:
@@ -121,6 +125,8 @@ class AntiSpam(commands.Cog):
         self, detection: SpamDetection
     ) -> datetime.datetime | None:
         if not detection.guild.me.guild_permissions.moderate_members:
+            return
+        elif detection.author.top_role >= detection.guild.me.top_role:
             return
 
         duration = datetime.timedelta(minutes=10)
