@@ -37,7 +37,7 @@ def check_burst_spam(
 def check_channel_spam(
     context: SpamContext,
     *,
-    message_threshold: int = 4,
+    channel_threshold: int = 4,
     period: datetime.timedelta = datetime.timedelta(seconds=10),
 ) -> SpamDetection | None:
     """Check if an author has sent too many messages across different channels
@@ -46,7 +46,7 @@ def check_channel_spam(
     after = discord.utils.utcnow() - period
     messages = context.query_messages(after=after)
     unique_channels = set(m.channel.id for m in messages)
-    if len(unique_channels) < message_threshold:
+    if len(unique_channels) < channel_threshold:
         return
 
     return SpamDetection(
