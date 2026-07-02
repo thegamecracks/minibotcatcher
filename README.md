@@ -113,7 +113,7 @@ move the bot's role above member/vanity roles, but stay below staff roles.
 
 The following spam filters are implemented:
 
-- Burst spam: the author must not quickly send messages across multiple channels.
+- Channel spam: the author must not quickly send messages across multiple channels.
 - Mention spam: the author must not quickly mention other users/roles across multiple messages.
 
 While these filters are designed only to catch user bots, it is possible that

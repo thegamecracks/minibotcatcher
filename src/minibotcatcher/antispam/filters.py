@@ -150,7 +150,7 @@ def _can_send_in_channel(channel: discord.abc.MessageableChannel) -> bool:
     return channel.permissions_for(channel.guild.me).send_messages
 
 
-def check_burst_spam(
+def check_channel_spam(
     context: SpamContext,
     *,
     message_threshold: int = 4,
@@ -166,7 +166,7 @@ def check_burst_spam(
         return
 
     log.info(
-        "Detected burst message spam: %s sent %d messages in %d channels "
+        "Detected channel spam: %s sent %d messages in %d channels "
         "within a period of %s",
         context.author,
         len(messages),
@@ -176,7 +176,7 @@ def check_burst_spam(
     return SpamDetection(
         author=context.author,
         messages=messages,
-        reason=f"burst spam - sent {len(messages)} messages",
+        reason=f"channel spam - sent {len(messages)} messages",
     )
 
 
