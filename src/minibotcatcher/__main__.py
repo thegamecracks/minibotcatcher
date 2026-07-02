@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 import sys
@@ -12,7 +13,8 @@ def main() -> None:
     from minibotcatcher.bot import Bot  # defer discord.py import
 
     bot = Bot()
-    bot.run(token, root_logger=True)
+    setup_logging()
+    bot.run(token, log_handler=None)
 
 
 def read_token() -> str:
@@ -22,6 +24,13 @@ def read_token() -> str:
     elif not re.fullmatch(r"\w+\.\w+\.\S+", token):
         sys.exit("BOT_TOKEN appears to be invalid, double check bot token")
     return token
+
+
+def setup_logging() -> None:
+    import discord  # defer discord.py import
+
+    discord.utils.setup_logging()
+    logging.getLogger(__package__).setLevel(logging.DEBUG)
 
 
 if __name__ == "__main__":
