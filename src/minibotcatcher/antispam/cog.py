@@ -46,6 +46,8 @@ ADMIN_PERMISSIONS = discord.Permissions(
 )
 
 log = logging.getLogger(__name__)
+log.info("AUDIT_CHANNELS: %d channels set", len(AUDIT_CHANNELS))
+log.info("SPAM_FILTERS: %d filters enabled (%s)", len(SPAM_FILTERS), ",".join(SPAM_FILTERS))
 
 
 def _is_mod_role(role: discord.Role) -> bool:
