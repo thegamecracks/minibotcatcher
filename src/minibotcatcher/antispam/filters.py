@@ -114,7 +114,7 @@ def _message_contains_any_mention(message: discord.Message) -> int:
     )
 
 
-SPAM_FILTERS: dict[str, Callable[[SpamContext], SpamDetection | None]] = {
+ALL_SPAM_FILTERS: dict[str, Callable[[SpamContext], SpamDetection | None]] = {
     "burst": check_burst_spam,
     "channel": check_channel_spam,
     "mention": check_mention_spam,

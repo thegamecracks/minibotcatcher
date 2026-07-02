@@ -67,9 +67,15 @@ The following environment variables are used for configuration:
 
 - `BOT_TOKEN`: the token used to start the bot.
 - `AUDIT_CHANNELS`: a comma-separated list of channel IDs for reporting infractions (see [Actions](#actions)).
+- `SPAM_FILTERS`: a comma-separated list of filter names (see [Filters](#filters)).
 
 For manual setup, the bot can load environment variables from a `.env` file.
 On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
+
+> [!WARNING]
+>
+> The above configuration options are not yet stable,
+> and are subject to change in a future release.
 
 ## Intents
 
@@ -113,11 +119,19 @@ move the bot's role above member/vanity roles, but stay below staff roles.
 
 The following spam filters are implemented:
 
-- Burst spam: the author must not excessively send messages in a short period.
-- Channel spam: the author must not quickly send messages across multiple channels.
-- Mention spam: the author must not quickly mention other users/roles across multiple messages.
+- Burst spam (`burst`):
+  the author must not excessively send messages in a short period.
+- Channel spam (`channel`):
+  the author must not quickly send messages across multiple channels.
+- Mention spam (`mention`):
+  the author must not quickly mention other users/roles across multiple messages.
 
-While these filters are designed only to catch user bots, it is possible that
+By default, all spam filters are enabled. To select specific filters, the
+`SPAM_FILTERS` envvar can be set to a comma-separated list of filter names,
+for example, `SPAM_FILTERS=channel,mention`.
+This setting applies globally to all servers.
+
+While these filters are currently designed to catch user bots, it is possible that
 a real user can trigger the filters. In case this happens, admins with the
 Moderate Members permission can reverse a timeout by right-clicking or
 long-tapping their username.

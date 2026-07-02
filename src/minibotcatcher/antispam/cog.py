@@ -10,7 +10,7 @@ from discord.ext import commands
 from minibotcatcher.bot import Bot
 
 from .filters import (
-    SPAM_FILTERS,
+    ALL_SPAM_FILTERS,
     SpamContextCache,
     SpamDetection,
 )
@@ -19,6 +19,12 @@ AUDIT_CHANNELS = [
     int(channel_id)
     for channel_id in re.findall(r"\d+", os.getenv("AUDIT_CHANNELS", ""))
 ]
+_selected_filters = re.findall(r"\w+", os.getenv("SPAM_FILTERS", ""))
+SPAM_FILTERS = {
+    name: check
+    for name, check in ALL_SPAM_FILTERS.items()
+    if not _selected_filters or name in _selected_filters
+}
 ADMIN_PERMISSIONS = discord.Permissions(
     kick_members=True,
     ban_members=True,
