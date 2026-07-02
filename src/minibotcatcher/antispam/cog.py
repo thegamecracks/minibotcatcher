@@ -62,7 +62,7 @@ class AntiSpam(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.context_cache = SpamContextCache(
-            message_period=datetime.timedelta(minutes=10),
+            message_period=datetime.timedelta(minutes=1),
         )
 
     @commands.Cog.listener("on_message")
