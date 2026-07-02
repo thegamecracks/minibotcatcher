@@ -38,7 +38,7 @@ class Bot(commands.Bot):
             sys.exit(1)
 
     async def setup_hook(self) -> None:
-        log.info("Running version: %s", __version__)
+        log.info("Running version: v%s", __version__)
         await self.load_extension("minibotcatcher.antispam")
         await self._maybe_load_jishaku()
 
