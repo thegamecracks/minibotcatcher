@@ -153,6 +153,7 @@ class AntiSpam(commands.Cog):
         audit_channel = self.get_audit_channel(detection.guild)
         channel = audit_channel or detection.recent_channel
         if channel is None:
+            log.warning("Cannot send audit message, no suitable channel found")
             return
 
         content = []
