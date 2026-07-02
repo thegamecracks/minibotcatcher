@@ -34,6 +34,12 @@ def setup_logging() -> None:
 
 
 def stream_supports_colour(stream: Any) -> bool:
+    # https://force-color.org/
+    if os.getenv("FORCE_COLOR"):
+        return True
+    elif os.getenv("NO_COLOR"):
+        return False
+
     is_a_tty = hasattr(stream, "isatty") and stream.isatty()
 
     # Pycharm and Vscode support colour in their inbuilt editors
