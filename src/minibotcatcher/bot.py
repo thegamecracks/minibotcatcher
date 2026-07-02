@@ -1,7 +1,5 @@
-import importlib.metadata
 import logging
 import sys
-from contextlib import suppress
 
 import discord
 from discord.ext import commands
@@ -40,16 +38,9 @@ class Bot(commands.Bot):
     async def setup_hook(self) -> None:
         log.info("Running version: v%s", __version__)
         await ext.load_extensions(self)
-        await self._maybe_load_jishaku()
 
         invite_link = self.get_standard_invite()
         log.info("Invite link:\n    %s", invite_link)
-
-    async def _maybe_load_jishaku(self) -> None:
-        with suppress(importlib.metadata.PackageNotFoundError):
-            version = importlib.metadata.version("jishaku")
-            await self.load_extension("jishaku")
-            log.info("Loaded jishaku extension (v%s)", version)
 
     def get_standard_invite(self) -> str:
         assert self.application is not None
