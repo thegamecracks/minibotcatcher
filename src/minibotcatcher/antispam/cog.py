@@ -125,8 +125,10 @@ class AntiSpam(commands.Cog):
         self, detection: SpamDetection
     ) -> datetime.datetime | None:
         if not detection.guild.me.guild_permissions.moderate_members:
+            log.info("Cannot timeout %s, insufficient permissions", detection.author)
             return
         elif detection.author.top_role >= detection.guild.me.top_role:
+            log.info("Cannot timeout %s, insufficient role order", detection.author)
             return
 
         duration = datetime.timedelta(minutes=10)
