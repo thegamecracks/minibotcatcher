@@ -120,15 +120,16 @@ the spam filters.
 
 ### Permissions
 
-Three potentially dangerous permissions are suggested in the invite link:
+Four potentially dangerous permissions are suggested in the invite link:
 
 - Moderate Members: allows timing out any bots that trigger a spam filter.
 - Manage Messages: allows deleting any offending messages detected by a spam filter.
 - Mention Everyone: better allows mentioning the first staff role that has kick or ban permissions.
+- Bypass Slowmode: prevents audit messages from being interrupted in slowmode channels.
 
 Each permission can be turned off to disable its corresponding functionality.
-With no dangerous permissions, the bot will only post a message indicating
-when a spam filter is triggered.
+For example, if the bot lacks the permissions to timeout or manage messages,
+the bot will only post the audit message when a spam filter is triggered.
 
 ### Exemptions
 

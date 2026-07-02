@@ -62,7 +62,9 @@ class Bot(commands.Bot):
                 send_messages_in_threads=True,
                 embed_links=True,
                 attach_files=True,
+                add_reactions=True,
                 # Dangerous permissions
+                bypass_slowmode=True,
                 manage_messages=True,
                 mention_everyone=True,
                 moderate_members=True,
