@@ -57,7 +57,7 @@ $ uv run minibotcatcher
 ```
 
 This method will also install development dependencies including
-[jishaku](github.com/scarletcafe/jishaku), an extension that allows
+[jishaku](https://github.com/scarletcafe/jishaku), an extension that allows
 the bot owner to run arbitrary Python code and other debugging utilities.
 
 ## Configuration
