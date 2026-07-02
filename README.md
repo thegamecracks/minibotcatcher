@@ -1,10 +1,10 @@
 # minibotcatcher
 
-[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/publish.yml?style=flat-square&logo=uv&label=build)](https://docs.astral.sh/uv/)
-[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/docker.yml?style=flat-square&logo=docker&label=docker)](https://docs.astral.sh/uv/)
-[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/type-check.yml?style=flat-square&logo=ty&label=types)](https://docs.astral.sh/ty/)
-[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-check.yml?style=flat-square&logo=ruff&label=lints)](https://docs.astral.sh/ruff/)
-[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-format.yml?style=flat-square&logo=ruff&label=style)](https://docs.astral.sh/ruff/)
+[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/publish.yml?style=flat-square&logo=uv&label=build)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/publish.yml)
+[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/docker.yml?style=flat-square&logo=docker&label=docker)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/docker.yml)
+[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/type-check.yml?style=flat-square&logo=ty&label=types)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/type-check.yml)
+[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-check.yml?style=flat-square&logo=ruff&label=lints)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/ruff-check.yml)
+[![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/ruff-format.yml?style=flat-square&logo=ruff&label=style)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/ruff-format.yml)
 
 ![Demonstration image](https://github.com/thegamecracks/minibotcatcher/blob/main/docs/images/demo.png)
 
