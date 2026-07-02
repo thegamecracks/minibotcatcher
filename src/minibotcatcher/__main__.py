@@ -1,9 +1,10 @@
-import logging
 import os
 import re
 import sys
 
 from dotenv import load_dotenv
+
+from .logging import setup_logging
 
 
 def main() -> None:
@@ -24,13 +25,6 @@ def read_token() -> str:
     elif not re.fullmatch(r"\w+\.\w+\.\S+", token):
         sys.exit("BOT_TOKEN appears to be invalid, double check bot token")
     return token
-
-
-def setup_logging() -> None:
-    import discord  # defer discord.py import
-
-    discord.utils.setup_logging()
-    logging.getLogger(__package__).setLevel(logging.DEBUG)
 
 
 if __name__ == "__main__":
