@@ -96,25 +96,25 @@ Each permission can be turned off to disable its corresponding functionality.
 With no dangerous permissions, the bot will only post a message indicating
 when a spam filter is triggered.
 
-### Exempted Users
+### Exemptions
 
-Spam filters do not apply to anyone that has meets any of the following conditions:
+Spam filters do not apply to any message that meets any of the following conditions:
 
-- The author sent their message to the bot's DMs
+- The message was sent to the bot's DMs
 - The author is marked as a bot, system, or webhook
-- The author has any moderation permission (e.g. kick, ban, manage XYZ, mute/deafen/move members, bypass slowmode)
+- The author has at least one moderation permission (e.g. kick, ban, manage XYZ, mute/deafen/move members, bypass slowmode)
 - The author's highest role exceeds the bot's highest role
 
 The last point actually determines whether Discord will allow the bot to apply
-moderation actions like timing out the member. As such, it is recommended to
-move the bot's role above most member/vanity roles, but stay below staff roles.
+moderation actions, like timing out the member. As such, it is recommended to
+move the bot's role above member/vanity roles, but stay below staff roles.
 
 ### Filters
 
 The following spam filters are implemented:
 
 - Burst spam: the author must not quickly send messages across multiple channels.
-- Mention spam: the author must not mention multiple
+- Mention spam: the author must not quickly mention other users/roles across multiple messages.
 
 While these filters are designed only to catch user bots, it is possible that
 a real user can trigger the filters. In case this happens, admins with the
