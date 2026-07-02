@@ -2,7 +2,7 @@
 FROM cgr.dev/chainguard/wolfi-base AS base
 
 LABEL org.opencontainers.image.source=https://github.com/thegamecracks/minibotcatcher
-LABEL org.opencontainers.image.description="A small Discord bot to catch specific spam bots."
+LABEL org.opencontainers.image.description="A small Discord bot to catch spam bots."
 LABEL org.opencontainers.image.licenses=MIT
 
 FROM base AS build

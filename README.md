@@ -8,7 +8,7 @@
 
 ![Demonstration image](https://github.com/thegamecracks/minibotcatcher/blob/main/docs/images/demo.png)
 
-A small Discord bot to catch specific spam bots.
+A small Discord bot to catch spam bots.
 
 ## Table of Contents
 
