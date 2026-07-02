@@ -12,14 +12,20 @@ A small Discord bot to catch specific spam bots.
 
 ### Docker
 
-To run the latest image:
+To run the latest versioned image:
 
 ```sh
 $ docker pull ghcr.io/thegamecracks/minibotcatcher
 $ docker run --rm -it -e BOT_TOKEN=abc123 minibotcatcher
 ```
 
-Alternatively, to build and run from source:
+To run the latest development image from main branch:
+
+```sh
+$ docker run --rm -it -e BOT_TOKEN=abc123 ghcr.io/thegamecracks/minibotcatcher:main
+```
+
+To build and run from source directly:
 
 ```sh
 $ git clone https://github.com/thegamecracks/minibotcatcher
