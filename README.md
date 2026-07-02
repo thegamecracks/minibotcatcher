@@ -177,7 +177,7 @@ The following actions can be performed when a bot triggers the spam filter:
    This action is skipped if the bot does not have the Moderate Members permission.
 
    The `SPAM_TIMEOUT_MINUTES` envvar can be used to change how.
-   By default, the timeout is 10 minutes.
+   By default, the timeout is 5 minutes.
    If set to 0, offenders will never be timed out.
 
 2. The offender may have their offending messages deleted.

@@ -25,7 +25,7 @@ SPAM_FILTERS = {
     for name, check in ALL_SPAM_FILTERS.items()
     if not _selected_filters or name in _selected_filters
 }
-SPAM_TIMEOUT_MINUTES = int(os.getenv("SPAM_TIMEOUT_MINUTES", "10"))
+SPAM_TIMEOUT_MINUTES = int(os.getenv("SPAM_TIMEOUT_MINUTES", "5"))
 DEBUG_SKIP_ADMIN_CHECK = os.getenv("DEBUG_SKIP_ADMIN_CHECK") == "1"
 
 ADMIN_PERMISSIONS = discord.Permissions(
