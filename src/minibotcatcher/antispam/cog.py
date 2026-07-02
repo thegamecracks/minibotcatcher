@@ -55,6 +55,7 @@ log.info(
     len(SPAM_FILTERS),
     ",".join(SPAM_FILTERS),
 )
+log.info("SPAM_TIMEOUT_MINUTES: %d minute timeout", SPAM_TIMEOUT_MINUTES)
 
 
 def _is_mod_role(role: discord.Role) -> bool:
