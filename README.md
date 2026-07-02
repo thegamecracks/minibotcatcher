@@ -23,6 +23,10 @@ $ docker run -e BOT_TOKEN=abc123 minibotcatcher
 
 ### Manual setup (python+pip)
 
+The minimum required [Python](https://www.python.org/) version is **3.14**.
+It is highly recommended to install the project and its dependencies
+inside a [virtual environment](https://docs.python.org/3/library/venv.html):
+
 ```sh
 $ git clone https://github.com/thegamecracks/minibotcatcher
 $ cd minibotcatcher
@@ -42,6 +46,7 @@ the setup becomes a bit simpler:
 $ git clone https://github.com/thegamecracks/minibotcatcher
 $ cd minibotcatcher
 $ echo 'BOT_TOKEN=abc123' > .env  # on Windows, add this file by hand
+$ # optional: uv python install 3.14
 $ uv run minibotcatcher
 ```
 
