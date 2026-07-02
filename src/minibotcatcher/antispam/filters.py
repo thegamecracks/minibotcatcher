@@ -6,7 +6,7 @@ import logging
 import re
 from collections import deque
 from dataclasses import dataclass, field
-from typing import Sequence
+from typing import Callable, Sequence
 
 import discord
 
@@ -112,6 +112,13 @@ def _message_contains_any_mention(message: discord.Message) -> int:
         or "@everyone" in message.content
         or "@here" in message.content
     )
+
+
+SPAM_FILTERS: dict[str, Callable[[SpamContext], SpamDetection | None]] = {
+    "burst": check_burst_spam,
+    "channel": check_channel_spam,
+    "mention": check_mention_spam,
+}
 
 
 class SpamContextCache:

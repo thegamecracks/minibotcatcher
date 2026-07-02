@@ -3,7 +3,6 @@ import logging
 import os
 import re
 from contextlib import suppress
-from typing import Callable
 
 import discord
 from discord.ext import commands
@@ -11,12 +10,9 @@ from discord.ext import commands
 from minibotcatcher.bot import Bot
 
 from .filters import (
-    SpamContext,
+    SPAM_FILTERS,
     SpamContextCache,
     SpamDetection,
-    check_burst_spam,
-    check_channel_spam,
-    check_mention_spam,
 )
 
 AUDIT_CHANNELS = [
@@ -63,18 +59,11 @@ def _is_mod_role(role: discord.Role) -> bool:
 
 
 class AntiSpam(commands.Cog):
-    filters: list[Callable[[SpamContext], SpamDetection | None]]
-
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.context_cache = SpamContextCache(
             message_period=datetime.timedelta(minutes=10),
         )
-        self.filters = [
-            check_burst_spam,
-            check_channel_spam,
-            check_mention_spam,
-        ]
 
     @commands.Cog.listener("on_message")
     async def apply_spam_filters(self, message: discord.Message) -> None:
@@ -85,8 +74,8 @@ class AntiSpam(commands.Cog):
         if context is None:
             return
 
-        for func in self.filters:
-            detection = func(context)
+        for name, check_spam in SPAM_FILTERS.items():
+            detection = check_spam(context)
             if detection is not None:
                 await self.take_action_on_detection(detection)
                 self.context_cache.pop(message)
