@@ -15,6 +15,105 @@ URL_PATTERN = re.compile(r"https?://\w+\.\w+\S*")  # close enough :)
 log = logging.getLogger(__name__)
 
 
+def check_burst_spam(
+    context: SpamContext,
+    *,
+    message_threshold: int = 8,
+    period: datetime.timedelta = datetime.timedelta(seconds=10),
+) -> SpamDetection | None:
+    """Check if an author has sent too many messages in the given period."""
+    after = discord.utils.utcnow() - period
+    messages = context.query_messages(after=after)
+    if len(messages) < message_threshold:
+        return
+
+    log.info(
+        "Detected burst spam: %s sent %d messages within a period of %s",
+        context.author,
+        len(messages),
+        period,
+    )
+    return SpamDetection(
+        author=context.author,
+        messages=messages,
+        reason=f"burst spam - sent {len(messages)} messages",
+    )
+
+
+def check_channel_spam(
+    context: SpamContext,
+    *,
+    message_threshold: int = 4,
+    period: datetime.timedelta = datetime.timedelta(seconds=10),
+) -> SpamDetection | None:
+    """Check if an author has sent too many messages across different channels
+    in the given period.
+    """
+    after = discord.utils.utcnow() - period
+    messages = context.query_messages(after=after)
+    unique_channels = set(m.channel.id for m in messages)
+    if len(unique_channels) < message_threshold:
+        return
+
+    log.info(
+        "Detected channel spam: %s sent %d messages in %d channels "
+        "within a period of %s",
+        context.author,
+        len(messages),
+        len(unique_channels),
+        period,
+    )
+    return SpamDetection(
+        author=context.author,
+        messages=messages,
+        reason=f"channel spam - sent {len(messages)} messages",
+    )
+
+
+def check_mention_spam(
+    context: SpamContext,
+    *,
+    message_threshold: int = 3,
+    period: datetime.timedelta = datetime.timedelta(seconds=30),
+) -> SpamDetection | None:
+    """Check if an author has used a mention across too many messages
+    in the given period.
+
+    Multiple mentions in a single message only counts as one against the threshold.
+    Discord AutoMod can be used to limit the total number of mentions in a single message.
+
+    """
+    after = discord.utils.utcnow() - period
+    messages = context.query_messages(after=after)
+    messages = [m for m in messages if _message_contains_any_mention(m)]
+    if len(messages) < message_threshold:
+        return
+
+    log.info(
+        "Detected mention spam: %s used mentions across %d messages "
+        "within a period of %s",
+        context.author,
+        len(messages),
+        period,
+    )
+    return SpamDetection(
+        author=context.author,
+        messages=messages,
+        reason=f"mention spam - sent {len(messages)} messages",
+    )
+
+
+def _message_contains_any_mention(message: discord.Message) -> int:
+    return (
+        any(
+            user for user in message.mentions if not user.bot and user != message.author
+        )
+        or any(role for role in message.role_mentions if role.mentionable)
+        or "@everyone" in message.content
+        or "@here" in message.content
+    )
+
+
 class SpamContextCache:
     """Create and manage SpamContext instances from messages.
 
@@ -148,102 +247,3 @@ class SpamDetection:
 def _can_send_in_channel(channel: discord.abc.MessageableChannel) -> bool:
     assert channel.guild is not None
     return channel.permissions_for(channel.guild.me).send_messages
-
-
-def check_burst_spam(
-    context: SpamContext,
-    *,
-    message_threshold: int = 8,
-    period: datetime.timedelta = datetime.timedelta(seconds=10),
-) -> SpamDetection | None:
-    """Check if an author has sent too many messages in the given period."""
-    after = discord.utils.utcnow() - period
-    messages = context.query_messages(after=after)
-    if len(messages) < message_threshold:
-        return
-
-    log.info(
-        "Detected burst spam: %s sent %d messages within a period of %s",
-        context.author,
-        len(messages),
-        period,
-    )
-    return SpamDetection(
-        author=context.author,
-        messages=messages,
-        reason=f"burst spam - sent {len(messages)} messages",
-    )
-
-
-def check_channel_spam(
-    context: SpamContext,
-    *,
-    message_threshold: int = 4,
-    period: datetime.timedelta = datetime.timedelta(seconds=10),
-) -> SpamDetection | None:
-    """Check if an author has sent too many messages across different channels
-    in the given period.
-    """
-    after = discord.utils.utcnow() - period
-    messages = context.query_messages(after=after)
-    unique_channels = set(m.channel.id for m in messages)
-    if len(unique_channels) < message_threshold:
-        return
-
-    log.info(
-        "Detected channel spam: %s sent %d messages in %d channels "
-        "within a period of %s",
-        context.author,
-        len(messages),
-        len(unique_channels),
-        period,
-    )
-    return SpamDetection(
-        author=context.author,
-        messages=messages,
-        reason=f"channel spam - sent {len(messages)} messages",
-    )
-
-
-def check_mention_spam(
-    context: SpamContext,
-    *,
-    message_threshold: int = 3,
-    period: datetime.timedelta = datetime.timedelta(seconds=30),
-) -> SpamDetection | None:
-    """Check if an author has used a mention across too many messages
-    in the given period.
-
-    Multiple mentions in a single message only counts as one against the threshold.
-    Discord AutoMod can be used to limit the total number of mentions in a single message.
-
-    """
-    after = discord.utils.utcnow() - period
-    messages = context.query_messages(after=after)
-    messages = [m for m in messages if _message_contains_any_mention(m)]
-    if len(messages) < message_threshold:
-        return
-
-    log.info(
-        "Detected mention spam: %s used mentions across %d messages "
-        "within a period of %s",
-        context.author,
-        len(messages),
-        period,
-    )
-    return SpamDetection(
-        author=context.author,
-        messages=messages,
-        reason=f"mention spam - sent {len(messages)} messages",
-    )
-
-
-def _message_contains_any_mention(message: discord.Message) -> int:
-    return (
-        any(
-            user for user in message.mentions if not user.bot and user != message.author
-        )
-        or any(role for role in message.role_mentions if role.mentionable)
-        or "@everyone" in message.content
-        or "@here" in message.content
-    )
