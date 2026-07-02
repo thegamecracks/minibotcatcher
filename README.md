@@ -19,7 +19,7 @@ $ docker pull ghcr.io/thegamecracks/minibotcatcher
 $ docker run --rm -it -e BOT_TOKEN=abc123 minibotcatcher
 ```
 
-Alternatively, to build images from source:
+Alternatively, to build and run from source:
 
 ```sh
 $ git clone https://github.com/thegamecracks/minibotcatcher
