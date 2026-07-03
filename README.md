@@ -214,7 +214,7 @@ The following actions can be performed when a bot triggers the spam filter:
 
    The `AUDIT_MESSAGES` envvar controls how audit messages are sent:
    - `AUDIT_MESSAGES=0`: audit messages are turned off entirely.
-   - `AUDIT_MESSAGES=1`: (default)
+   - `AUDIT_MESSAGES=1` (default):
      audit messages are sent only once to the audit channel if set,
      or the most recent channel otherwise.
      This is preferred if you have an audit channel and don't want a
