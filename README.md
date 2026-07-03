@@ -121,8 +121,11 @@ This intent is required for the bot to run and to apply certain spam filters, su
 ## Usage
 
 When the bot is started, it will print an invite link requesting the relevant
-permissions. After using the link to invite the bot to a server, no further action
-is required, and the bot will begin watching messages and checking them against
+permissions. Use this invite link to add your bot, and then move the bot's new
+role above any member/vanity roles that you want checked for spam
+(see [Exemptions](#exemptions)).
+
+Afterwards, the bot will begin watching messages and checking them against
 the spam filters.
 
 ### Permissions
