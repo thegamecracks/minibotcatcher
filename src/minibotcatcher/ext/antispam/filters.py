@@ -45,7 +45,7 @@ def check_channel_spam(
     """
     after = discord.utils.utcnow() - period
     messages = context.query_messages(after=after)
-    unique_channels = set(m.channel.id for m in messages)
+    unique_channels = {m.channel.id for m in messages}
     if len(unique_channels) < channel_threshold:
         return
 

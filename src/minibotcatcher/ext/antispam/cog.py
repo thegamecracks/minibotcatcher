@@ -149,7 +149,7 @@ class AntiSpam(commands.Cog):
             return
 
         sent = [s for m in pending_messages if (s := await m.send()) is not None]
-        channel_names = set(f"'{m.channel}'" for m in sent)
+        channel_names = {f"'{m.channel}'" for m in sent}
         log.info("Sent audit messages to %s", " and ".join(channel_names))
 
     async def delete_offending_messages(self, detection: SpamDetection) -> None:
