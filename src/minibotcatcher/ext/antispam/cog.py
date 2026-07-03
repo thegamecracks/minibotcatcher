@@ -1,7 +1,5 @@
 import datetime
 import logging
-import os
-import re
 from contextlib import suppress
 
 import discord
@@ -9,24 +7,16 @@ from discord.ext import commands
 
 from minibotcatcher.bot import Bot
 
+from .env import (
+    AUDIT_CHANNELS,
+    SPAM_FILTERS,
+    SPAM_TIMEOUT_MINUTES,
+    DEBUG_SKIP_ADMIN_CHECK,
+)
 from .filters import (
-    ALL_SPAM_FILTERS,
     SpamContextCache,
     SpamDetection,
 )
-
-AUDIT_CHANNELS = [
-    int(channel_id)
-    for channel_id in re.findall(r"\d+", os.getenv("AUDIT_CHANNELS", ""))
-]
-_selected_filters = re.findall(r"\w+", os.getenv("SPAM_FILTERS", ""))
-SPAM_FILTERS = {
-    name: check
-    for name, check in ALL_SPAM_FILTERS.items()
-    if not _selected_filters or name in _selected_filters
-}
-SPAM_TIMEOUT_MINUTES = int(os.getenv("SPAM_TIMEOUT_MINUTES", "5"))
-DEBUG_SKIP_ADMIN_CHECK = os.getenv("DEBUG_SKIP_ADMIN_CHECK") == "1"
 
 ADMIN_PERMISSIONS = discord.Permissions(
     kick_members=True,
@@ -49,13 +39,6 @@ ADMIN_PERMISSIONS = discord.Permissions(
 )
 
 log = logging.getLogger(__name__)
-log.info("AUDIT_CHANNELS: %d channels set", len(AUDIT_CHANNELS))
-log.info(
-    "SPAM_FILTERS: %d filters enabled (%s)",
-    len(SPAM_FILTERS),
-    ",".join(SPAM_FILTERS),
-)
-log.info("SPAM_TIMEOUT_MINUTES: %d minute timeout", SPAM_TIMEOUT_MINUTES)
 
 
 def _is_mod_role(role: discord.Role) -> bool:
