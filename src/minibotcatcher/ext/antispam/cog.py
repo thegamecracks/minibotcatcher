@@ -1,14 +1,15 @@
 import datetime
 import logging
-from contextlib import suppress
 
 import discord
 from discord.ext import commands
 
 from minibotcatcher.bot import Bot
 
+from .audit import AuditMessagesDisabled, NoAuditChannel, create_audit_messages
 from .env import (
     AUDIT_CHANNELS,
+    AUDIT_MESSAGES,
     SPAM_FILTERS,
     SPAM_TIMEOUT_MINUTES,
     DEBUG_SKIP_ADMIN_CHECK,
@@ -105,7 +106,7 @@ class AntiSpam(commands.Cog):
     async def take_action_on_detection(self, detection: SpamDetection) -> None:
         log.info("Spam filter triggered - %s - %s", detection.author, detection.reason)
         timed_out_until = await self.timeout_offender(detection)
-        await self.send_audit_message(detection, timed_out_until=timed_out_until)
+        await self.send_audit_messages(detection, timed_out_until=timed_out_until)
         await self.delete_offending_messages(detection)
 
     async def timeout_offender(
@@ -127,48 +128,29 @@ class AntiSpam(commands.Cog):
         await detection.author.timeout(timed_out_until, reason=detection.reason)
         return timed_out_until
 
-    async def send_audit_message(
+    async def send_audit_messages(
         self,
         detection: SpamDetection,
         *,
         timed_out_until: datetime.datetime | None,
     ) -> None:
-        audit_channel = self.get_audit_channel(detection.guild)
-        channel = audit_channel or detection.recent_channel
-        if channel is None:
-            log.warning("Cannot send audit message, no suitable channel found")
+        try:
+            pending_messages = create_audit_messages(
+                mode=AUDIT_MESSAGES,
+                detection=detection,
+                timed_out_until=timed_out_until,
+                mod_mention=self.get_mod_mention(detection.guild),
+                audit_channel=self.get_audit_channel(detection.guild),
+            )
+        except AuditMessagesDisabled:
+            return
+        except NoAuditChannel:
+            log.warning("Cannot send audit messages, no suitable channel found")
             return
 
-        content = []
-
-        mention = detection.author.mention
-        if timed_out_until is not None:
-            timestamp_f = discord.utils.format_dt(timed_out_until, style="f")
-            content.append(
-                f"⚠️ {mention} has been timed out until {timestamp_f} "
-                f"(reason: {detection.reason})."
-            )
-        else:
-            content.append(
-                f"⚠️ {mention} triggered a spam filter (reason: {detection.reason})."
-            )
-
-        mod_mention = self.get_mod_mention(detection.guild)
-        content.append("")
-        content.append(f"Alerting {mod_mention} for review.")
-
-        log.info("Sending audit message to %s", channel)
-        await channel.send(
-            "\n".join(content),
-            allowed_mentions=discord.AllowedMentions(
-                everyone=False,
-                users=not mod_mention.startswith("<@&"),
-            ),
-        )
-
-        if audit_channel is not None:
-            with suppress(discord.HTTPException):
-                await detection.messages[-1].forward(audit_channel)
+        sent = [s for m in pending_messages if (s := await m.send()) is not None]
+        channel_names = set(f"'{m.channel}'" for m in sent)
+        log.info("Sent audit messages to %s", " and ".join(channel_names))
 
     async def delete_offending_messages(self, detection: SpamDetection) -> None:
         deleteable = [

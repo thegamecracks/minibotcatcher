@@ -95,6 +95,9 @@ The following environment variables are supported:
 - `AUDIT_CHANNELS`:
   a comma-separated list of channel IDs for reporting infractions
   (see [Actions](#actions)).
+- `AUDIT_MESSAGES`:
+  how to handle sending audit messages
+  (see [Actions](#actions)).
 - `SPAM_FILTERS`:
   a comma-separated list of filter names
   (see [Filters](#filters)).
@@ -208,6 +211,19 @@ The following actions can be performed when a bot triggers the spam filter:
    the message will be sent there instead, along with the most recent offending
    message forwarded. If multiple channels match, the first available channel
    will be used.
+
+   The `AUDIT_MESSAGES` envvar controls how audit messages are sent:
+   - `AUDIT_MESSAGES=0`: audit messages are turned off entirely.
+   - `AUDIT_MESSAGES=1`: (default)
+     audit messages are sent only once to the audit channel if set,
+     or the most recent channel otherwise.
+     This is preferred if you have an audit channel and don't want a
+     public notification that a member was timed out.
+   - `AUDIT_MESSAGES=2`:
+     audit messages are sent both to the audit channel
+     and the most recent channel.
+     This is preferred if you always want a public notification of
+     a member being timed out.
 
 ## License
 
