@@ -3,7 +3,7 @@ from __future__ import annotations
 import datetime
 from abc import ABC, abstractmethod
 from contextlib import suppress
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import assert_never
 
 import discord
@@ -54,7 +54,6 @@ def _create_prefer_audit_channel_messages(
         return [
             ContentAuditMessage(
                 channel=params.audit_channel,
-                allowed_mentions=params.create_allowed_mentions(),
                 content=params.create_content(include_mention=True),
             ),
             ForwardAuditMessage(
@@ -66,7 +65,6 @@ def _create_prefer_audit_channel_messages(
         return [
             ContentAuditMessage(
                 channel=params.recent_channel,
-                allowed_mentions=params.create_allowed_mentions(),
                 content=params.create_content(include_mention=True),
             ),
         ]
@@ -84,7 +82,6 @@ def _create_audit_and_recent_messages(
     return [
         ContentAuditMessage(
             channel=params.recent_channel,
-            allowed_mentions=params.create_allowed_mentions(),
             content=params.create_content(include_mention=True),
         ),
         ContentAuditMessage(
@@ -108,8 +105,10 @@ class AuditMessage(ABC):
 @dataclass(kw_only=True)
 class ContentAuditMessage(AuditMessage):
     channel: discord.abc.MessageableChannel
-    allowed_mentions: discord.AllowedMentions
     content: str
+    allowed_mentions: discord.AllowedMentions = field(
+        default_factory=lambda: discord.AllowedMentions(everyone=False),
+    )
 
     async def send(self) -> discord.Message | None:
         return await self.channel.send(
@@ -143,12 +142,6 @@ class _AuditMessageParams:  # FIXME: is there a better name for this?
     @property
     def recent_channel(self) -> discord.abc.MessageableChannel | None:
         return self.detection.recent_channel
-
-    def create_allowed_mentions(self) -> discord.AllowedMentions:
-        return discord.AllowedMentions(
-            everyone=False,
-            users=not self.mod_mention.startswith("<@&"),
-        )
 
     def create_content(self, *, include_mention: bool) -> str:
         lines: list[str] = []
