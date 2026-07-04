@@ -9,6 +9,12 @@
 ![Demonstration image](https://raw.githubusercontent.com/thegamecracks/minibotcatcher/refs/heads/main/docs/images/demo.png)
 
 A small Discord bot to catch spam bots.
+Automatically timeout bots, delete spam, and alert moderators.
+
+Made to be easy to self-host with minimal configuration.
+Optionally works without dangerous [permissions](#permissions) if desired.
+
+See the [Usage](#usage) section for all features.
 
 ## Table of Contents
 
