@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import asyncio
 import bisect
 import datetime
 import logging
 import re
 from collections import deque
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
-from typing import Callable, Sequence
+from typing import AsyncIterator, Callable, Sequence
 
 import discord
 
@@ -109,27 +111,48 @@ class SpamContextCache:
 
     type KEY = tuple[int, int]
     contexts: dict[KEY, SpamContext]
+    _acquired_contexts: set[KEY]
 
     def __init__(self, *, message_period: datetime.timedelta) -> None:
         self.contexts = {}
         self.message_period = message_period
+        self._acquired_contexts = set()
+        self._cond = asyncio.Condition()
 
-    def get(self, message: discord.Message) -> SpamContext | None:
-        """Get the current SpamContext for a given message.
+    @asynccontextmanager
+    async def acquire(self, message: discord.Message) -> AsyncIterator[SpamContext]:
+        """Acquire the SpamContext for a given message.
+
+        If held by another task, wait until the context is released.
 
         If there is a cached context, any expired messages
         are removed. The passed message is then added to the context.
 
-        If the message is not associated with a guild,
-        this will always return None.
+        :raises ValueError: the message is not associated with a guild.
 
         """
-        if message.guild is None:
-            return
 
+        def is_context_free() -> bool:
+            return key not in self._acquired_contexts
+
+        key = self._get_message_key(message)
+
+        async with self._cond:
+            await self._cond.wait_for(is_context_free)
+            context = self._get(message)
+            self._acquired_contexts.add(key)
+
+        try:
+            yield context
+        finally:
+            async with self._cond:
+                self._acquired_contexts.discard(key)
+                self._cond.notify_all()
+
+    def _get(self, message: discord.Message) -> SpamContext:
         self._prune_contexts()  # is this expensive?
 
-        key = (message.guild.id, message.author.id)
+        key = self._get_message_key(message)
         context = self.contexts.get(key)
         if context is None:
             assert isinstance(message.author, discord.Member)
@@ -139,13 +162,16 @@ class SpamContextCache:
         context.add_message(message)
         return context
 
-    def pop(self, message: discord.Message) -> SpamContext | None:
-        """Remove and return any SpamContext corresponding to the given message."""
+    def _get_message_key(self, message: discord.Message) -> KEY:
         if message.guild is None:
-            return
+            raise ValueError("Cannot get context for message without guild")
 
-        key = (message.guild.id, message.author.id)
-        return self.contexts.pop(key, None)
+        return (message.guild.id, message.author.id)
+
+    def remove(self, context: SpamContext) -> None:
+        """Remove the given SpamContext from cache."""
+        key = (context.guild.id, context.author.id)
+        self.contexts.pop(key, None)
 
     def _prune_contexts(self) -> None:
         to_remove: list[SpamContextCache.KEY] = []
