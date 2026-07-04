@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from contextlib import suppress
 import datetime
 from abc import ABC, abstractmethod
+from contextlib import suppress
 from dataclasses import dataclass
 from typing import assert_never
 
