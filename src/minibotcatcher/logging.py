@@ -37,6 +37,16 @@ def setup_logging(*, verbose: int) -> None:
     logger.setLevel(root_level)
     logger.addHandler(handler)
 
+    # NOTE: Logging propagation only applies to handlers and not filters,
+    #       so root.addFilter() won't catch logs from all loggers.
+    #       We need to add filters directly to each package's logger.
+    logging.getLogger("discord.client").addFilter(
+        lambda r: not r.getMessage().endswith("voice will NOT be supported")
+    )
+    logging.getLogger("discord.gateway").addFilter(
+        lambda r: "has successfully RESUMED session" not in r.getMessage()
+    )
+
     logging.getLogger(__package__).setLevel(package_level)
 
 
