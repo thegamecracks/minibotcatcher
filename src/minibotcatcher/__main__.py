@@ -32,7 +32,10 @@ class Args:
             formatter_class=argparse.RawDescriptionHelpFormatter,
         )
         parser.add_argument(
-            "-V", "--version", action="version", version=f"{__package__} v{__version__}"
+            "-V",
+            "--version",
+            action="version",
+            version=f"{__package__} v{__version__}",
         )
         parser.add_argument(
             "-v",
