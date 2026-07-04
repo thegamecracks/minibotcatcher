@@ -174,12 +174,16 @@ class SpamContextCache:
         self.contexts.pop(key, None)
 
     def _prune_contexts(self) -> None:
-        to_remove: list[SpamContextCache.Key] = []
+        to_remove: list[SpamContext] = []
         expires_at = discord.utils.utcnow() - self.message_period
-        for key, context in self.contexts.items():
+
+        for context in self.contexts.values():
             context.remove_messages_before(expires_at)
             if not context.messages:
-                to_remove.append(key)
+                to_remove.append(context)
+
+        for context in to_remove:
+            self.remove(context)
 
 
 @dataclass(kw_only=True)
