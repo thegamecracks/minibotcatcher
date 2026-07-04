@@ -110,12 +110,13 @@ class SpamContextCache:
     """
 
     type Key = tuple[int, int]
-    contexts: dict[Key, SpamContext]
+    _contexts: dict[Key, SpamContext]
     _acquired_contexts: set[Key]
 
     def __init__(self, *, message_period: datetime.timedelta) -> None:
-        self.contexts = {}
         self.message_period = message_period
+
+        self._contexts = {}
         self._acquired_contexts = set()
         self._cond = asyncio.Condition()
 
@@ -153,11 +154,11 @@ class SpamContextCache:
         self._prune_contexts()  # is this expensive?
 
         key = self._get_message_key(message)
-        context = self.contexts.get(key)
+        context = self._contexts.get(key)
         if context is None:
             assert isinstance(message.author, discord.Member)
             context = SpamContext(author=message.author)
-            self.contexts[key] = context
+            self._contexts[key] = context
 
         context.add_message(message)
         return context
@@ -171,13 +172,13 @@ class SpamContextCache:
     def remove(self, context: SpamContext) -> None:
         """Remove the given SpamContext from cache."""
         key = (context.guild.id, context.author.id)
-        self.contexts.pop(key, None)
+        self._contexts.pop(key, None)
 
     def _prune_contexts(self) -> None:
         to_remove: list[SpamContext] = []
         expires_at = discord.utils.utcnow() - self.message_period
 
-        for context in self.contexts.values():
+        for context in self._contexts.values():
             context.remove_messages_before(expires_at)
             if not context.messages:
                 to_remove.append(context)
