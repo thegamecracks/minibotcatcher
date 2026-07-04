@@ -9,12 +9,12 @@ from .logging import setup_logging
 
 def main() -> None:
     load_dotenv()
+    setup_logging()
     token = read_token()
 
     from minibotcatcher.bot import Bot  # defer discord.py import
 
     bot = Bot()
-    setup_logging()
     bot.run(token, log_handler=None)
 
 
