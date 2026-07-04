@@ -84,12 +84,8 @@ the setup becomes a bit simpler:
 $ git clone https://github.com/thegamecracks/minibotcatcher
 $ cd minibotcatcher
 $ echo 'BOT_TOKEN=abc123' > .env  # on Windows, add this file by hand
-$ uv run minibotcatcher
+$ uv run --no-dev minibotcatcher
 ```
-
-This method will also install development dependencies including
-[jishaku](https://github.com/scarletcafe/jishaku), an extension that allows
-the bot owner to run arbitrary Python code and other debugging utilities.
 
 ## Configuration
 
