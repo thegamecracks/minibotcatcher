@@ -10,9 +10,16 @@ import sys
 from typing import Any
 
 
-def setup_logging() -> None:
-    root_level = logging.INFO
-    package_level = logging.DEBUG
+def setup_logging(*, verbose: int) -> None:
+    if verbose < 1:
+        root_level = logging.INFO
+        package_level = logging.NOTSET
+    elif verbose < 2:
+        root_level = logging.INFO
+        package_level = logging.DEBUG
+    else:
+        root_level = logging.DEBUG
+        package_level = logging.NOTSET
 
     handler = logging.StreamHandler()
     if stream_supports_colour(handler.stream):

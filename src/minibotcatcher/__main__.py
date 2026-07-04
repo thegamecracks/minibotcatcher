@@ -1,17 +1,54 @@
+import argparse
 import os
 import re
 import sys
+from dataclasses import dataclass
+from typing import Self
 
 from dotenv import load_dotenv
 
+from . import __version__
 from .logging import setup_logging
 
 
 def main() -> None:
     load_dotenv()
-    setup_logging()
-    token = read_token()
+    args = Args.parse_args()
 
+    setup_logging(verbose=args.verbose)
+
+    token = read_token()
+    start_bot(token)
+
+
+@dataclass(kw_only=True)
+class Args:
+    verbose: int
+
+    @classmethod
+    def parse_args(cls) -> Self:
+        parser = argparse.ArgumentParser(
+            description=__doc__,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+        )
+        parser.add_argument(
+            "-V", "--version", action="version", version=f"{__package__} v{__version__}"
+        )
+        parser.add_argument(
+            "-v",
+            "--verbose",
+            action="count",
+            default=0,
+        )
+
+        args = parser.parse_args()
+
+        return cls(
+            verbose=args.verbose,
+        )
+
+
+def start_bot(token: str) -> None:
     from minibotcatcher.bot import Bot  # defer discord.py import
 
     bot = Bot()
