@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths:
-      - src/**
-      - .dockerignore
-      - Dockerfile
-      # - LICENSE
-      - pyproject.toml
-      # - README.md
-      - uv.lock
+      - 'src/**'
+      - '.dockerignore'
+      - 'Dockerfile'
+      # - 'LICENSE'
+      - 'pyproject.toml'
+      # - 'README.md'
+      - 'uv.lock'
   workflow_dispatch:
 
 env:
