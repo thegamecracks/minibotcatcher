@@ -109,9 +109,9 @@ class SpamContextCache:
 
     """
 
-    type KEY = tuple[int, int]
-    contexts: dict[KEY, SpamContext]
-    _acquired_contexts: set[KEY]
+    type Key = tuple[int, int]
+    contexts: dict[Key, SpamContext]
+    _acquired_contexts: set[Key]
 
     def __init__(self, *, message_period: datetime.timedelta) -> None:
         self.contexts = {}
@@ -162,7 +162,7 @@ class SpamContextCache:
         context.add_message(message)
         return context
 
-    def _get_message_key(self, message: discord.Message) -> KEY:
+    def _get_message_key(self, message: discord.Message) -> Key:
         if message.guild is None:
             raise ValueError("Cannot get context for message without guild")
 
@@ -174,7 +174,7 @@ class SpamContextCache:
         self.contexts.pop(key, None)
 
     def _prune_contexts(self) -> None:
-        to_remove: list[SpamContextCache.KEY] = []
+        to_remove: list[SpamContextCache.Key] = []
         expires_at = discord.utils.utcnow() - self.message_period
         for key, context in self.contexts.items():
             context.remove_messages_before(expires_at)
