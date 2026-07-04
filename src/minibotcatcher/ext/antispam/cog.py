@@ -75,12 +75,21 @@ class AntiSpam(commands.Cog):
         if context is None:
             return
 
+        detection: SpamDetection | None = None
         for name, check_spam in SPAM_FILTERS.items():
             detection = check_spam(context)
             if detection is not None:
-                await self.take_action_on_detection(detection)
-                self.context_cache.pop(message)
-                return
+                break
+
+        if detection is None:
+            return
+
+        # Pop from context cache before doing anything asynchronous to avoid
+        # race conditions if the listener fires twice from the same author.
+        self.context_cache.pop(message)
+
+        await self.take_action_on_detection(detection)
+        return
 
     def can_moderate_message(self, message: discord.Message) -> bool:
         if message.guild is None:
