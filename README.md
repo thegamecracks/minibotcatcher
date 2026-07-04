@@ -147,8 +147,8 @@ Four potentially dangerous permissions are suggested in the invite link:
 - Bypass Slowmode: prevents audit messages from being interrupted in slowmode channels.
 
 Each permission can be turned off to disable its corresponding functionality.
-For example, if the bot lacks the permissions to timeout or manage messages,
-the bot will only post the audit message when a spam filter is triggered.
+For example, if the bot lacks the permissions to timeout or delete messages,
+the bot can still alert staff when a spam filter is triggered.
 
 ### Exemptions
 
