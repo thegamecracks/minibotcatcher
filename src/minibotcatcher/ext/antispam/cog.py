@@ -253,7 +253,7 @@ class AntiSpam(commands.Cog):
     async def antispam(self, ctx: Context) -> None:
         pass
 
-    @antispam.command("audit")
+    @antispam.command("audit")  # ty: ignore[invalid-argument-type]
     async def show_audit_channel(self, ctx: Context) -> None:
         """Show the configured audit channel, if any."""
         if AUDIT_MESSAGES == AuditMessageMode.DISABLED:
@@ -282,7 +282,7 @@ class AntiSpam(commands.Cog):
         else:
             assert_never(AUDIT_MESSAGES)
 
-    @antispam.command("staff")
+    @antispam.command("staff")  # ty: ignore[invalid-argument-type]
     async def show_mod_mention(self, ctx: Context) -> None:
         """Show the staff role to be mentioned on spam detections."""
         assert ctx.guild is not None
