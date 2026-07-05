@@ -1,5 +1,8 @@
 import datetime
 import logging
+from collections import defaultdict
+from contextlib import suppress
+from typing import Iterable
 
 import discord
 from discord.ext import commands
@@ -57,6 +60,54 @@ def _is_mod_role(role: discord.Role) -> bool:
         )
         and (role.mentionable or role.guild.me.guild_permissions.mention_everyone)
     )
+
+
+async def _try_bulk_delete_messages(all_messages: Iterable[discord.Message], /) -> None:
+    """Delete the given messages using the bulk delete endpoint if possible,
+    and fallback to single delete otherwise.
+
+    This does *not* check for permissions before deletion.
+
+    :raises discord.HTTPException: An error occurred while deleting messages.
+
+    """
+    # Group messages by channel and de-duplicate them
+    # (discord will return an HTTP 400 if we give any duplicates)
+    channel_messages: dict[int, dict[int, discord.Message]] = defaultdict(dict)
+    for m in all_messages:
+        channel_messages[m.channel.id][m.id] = m
+
+    supports_bulk_delete = (
+        discord.StageChannel,
+        discord.TextChannel,
+        discord.Thread,
+        discord.VoiceChannel,
+    )
+
+    for group in channel_messages.values():
+        group = list(group.values())
+        channel = group[0].channel
+
+        # Ideally we'd bulk delete messages up to 2 weeks old, 100 at a time,
+        # and fallback to regular delete for remaining messages...
+        # But realistically, we only need to clean up a dozen messages at once
+        if 2 <= len(group) <= 100 and isinstance(channel, supports_bulk_delete):
+            try:
+                await channel.delete_messages(group)
+            except discord.Forbidden:
+                raise  # expect single delete to fail as well
+            except discord.HTTPException:
+                # One or more messages were likely too old
+                log.warning(
+                    "Failed to bulk delete messages, falling back to slow delete. "
+                    "Expect to be rate limited."
+                )
+            else:
+                continue
+
+        for m in group:
+            with suppress(discord.NotFound):
+                await m.delete()
 
 
 class AntiSpam(commands.Cog):
@@ -164,8 +215,7 @@ class AntiSpam(commands.Cog):
             return
 
         log.info("Deleting %d messages from %s", len(deleteable), detection.author)
-        for message in deleteable:
-            await message.delete(delay=0)
+        await _try_bulk_delete_messages(deleteable)
 
     def get_mod_mention(self, guild: discord.Guild) -> str:
         role = discord.utils.find(_is_mod_role, guild.roles)
