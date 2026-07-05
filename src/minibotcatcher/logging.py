@@ -1,6 +1,6 @@
 """Handle logging configuration.
 
-Derived from the discord.utils module in discord.py 2.7.5.
+Derived from the discord.utils module in discord.py 2.7.1.
 
 """
 
