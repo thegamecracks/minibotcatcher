@@ -227,6 +227,10 @@ The following actions can be performed when a bot triggers the spam filter:
      This is preferred if you always want a public notification of
      a member being timed out.
 
+   Server admins can check the audit channel and staff role by using their
+   respective text commands, `@minibotcatcher antispam audit`
+   and `@minibotcatcher antispam staff`.
+
 ## License
 
 This project is written under the [MIT License].

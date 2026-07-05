@@ -2,12 +2,12 @@ import datetime
 import logging
 from collections import defaultdict
 from contextlib import suppress
-from typing import Iterable
+from typing import Iterable, assert_never
 
 import discord
 from discord.ext import commands
 
-from minibotcatcher.bot import Bot
+from minibotcatcher.bot import Bot, Context
 
 from .audit import AuditMessagesDisabled, NoAuditChannel, create_audit_messages
 from .env import (
@@ -16,6 +16,7 @@ from .env import (
     DEBUG_SKIP_ADMIN_CHECK,
     SPAM_FILTERS,
     SPAM_TIMEOUT_MINUTES,
+    AuditMessageMode,
 )
 from .filters import (
     SpamContextCache,
@@ -246,3 +247,53 @@ class AntiSpam(commands.Cog):
                 )
                 continue
             return channel
+
+    @commands.group("antispam")
+    @commands.has_guild_permissions(manage_guild=True)
+    async def antispam(self, ctx: Context) -> None:
+        pass
+
+    @antispam.command("audit")
+    async def show_audit_channel(self, ctx: Context) -> None:
+        """Show the configured audit channel, if any."""
+        if AUDIT_MESSAGES == AuditMessageMode.DISABLED:
+            await ctx.reply("The bot owner has disabled audit messages.")
+            return
+
+        assert ctx.guild is not None
+        channel = self.get_audit_channel(ctx.guild)
+        if channel is None:
+            await ctx.reply(
+                "No dedicated audit channel is set.\n"
+                "Ask the bot owner to set the channel, or if already set, "
+                "double check the channel's permissions."
+            )
+        elif AUDIT_MESSAGES == AuditMessageMode.PREFER_AUDIT_CHANNEL:
+            await ctx.reply(
+                f"The current audit channel is {channel}.\n"
+                f"Messages will only be sent to this channel."
+            )
+        elif AUDIT_MESSAGES == AuditMessageMode.AUDIT_AND_RECENT:
+            await ctx.reply(
+                f"The current audit channel is {channel}.\n"
+                f"Messages will be sent to both this channel and wherever "
+                f"a detection takes place."
+            )
+        else:
+            assert_never(AUDIT_MESSAGES)
+
+    @antispam.command("staff")
+    async def show_mod_mention(self, ctx: Context) -> None:
+        """Show the staff role to be mentioned on spam detections."""
+        assert ctx.guild is not None
+        mod_mention = self.get_mod_mention(ctx.guild)
+
+        await ctx.reply(
+            f"The current staff mention is {mod_mention}.",
+            allowed_mentions=discord.AllowedMentions(
+                everyone=False,
+                users=False,
+                roles=False,
+                replied_user=True,
+            ),
+        )

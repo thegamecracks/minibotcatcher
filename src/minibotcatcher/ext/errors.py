@@ -25,6 +25,15 @@ async def on_command_error(ctx: Context, error: commands.CommandError) -> None:
         pass
     elif isinstance(error, commands.CommandOnCooldown):
         await ctx.reply(f"This command is on cooldown for {error.retry_after:.1f}s.")
+    elif isinstance(error, commands.MissingPermissions):
+        log.debug(
+            "%s is missing the following permissions to run '%s': %s",
+            ctx.author,
+            ctx.command,
+            ", ".join(error.missing_permissions),
+        )
+    elif isinstance(error, commands.NoPrivateMessage):
+        pass
     elif isinstance(error, commands.CheckFailure):
         await ctx.reply("A check failed to pass before running this command.")
         log_command_error(ctx, error, debug=True)
