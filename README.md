@@ -119,9 +119,9 @@ On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
 
 ## Intents
 
-Before you start the bot, make sure to enable the **Message Content** intent
+Before you start the bot, consider enabling the **Message Content** intent
 for your bot in the [Discord Developer Portal](https://discord.com/developers/applications).
-This intent is required for the bot to run and to apply certain spam filters, such as mention spam.
+This privileged intent allows for additional spam filters, such as mention spam.
 
 ## Usage
 
@@ -168,7 +168,8 @@ The following spam filters are implemented:
 - Channel spam (`channel`):
   the author must not quickly send messages across multiple channels.
 - Mention spam (`mention`):
-  the author must not quickly mention other users/roles across multiple messages.
+  the author must not quickly mention other users/roles across multiple messages
+  (requires [Message Content](#intents)).
 
 By default, all spam filters are enabled. To select specific filters, the
 `SPAM_FILTERS` envvar can be set to a comma-separated list of filter names,

@@ -31,8 +31,7 @@ class Bot(commands.Bot):
             sys.exit(1)
         except discord.PrivilegedIntentsRequired:
             log.critical(
-                "Missing privileged intents! "
-                "You must enable the Message Content intent."
+                "Missing privileged intents! Please check the Discord Developer Portal."
             )
             sys.exit(1)
 
