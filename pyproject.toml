@@ -32,7 +32,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["jishaku~=2.6"]
+dev = ["jishaku~=2.7"]
 
 [project.scripts]
 minibotcatcher = "minibotcatcher.__main__:main"
