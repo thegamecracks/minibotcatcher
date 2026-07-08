@@ -270,7 +270,7 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "jishaku", specifier = "~=2.6" }]
+dev = [{ name = "jishaku", specifier = "~=2.7" }]
 
 [[package]]
 name = "multidict"
