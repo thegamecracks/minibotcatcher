@@ -27,12 +27,12 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "discord.py~=2.7",
-    "python-dotenv~=1.2",
+    "discord.py>=2.7",
+    "python-dotenv>=1.2",
 ]
 
 [dependency-groups]
-dev = ["jishaku~=2.7"]
+dev = ["jishaku>=2.7"]
 
 [project.scripts]
 minibotcatcher = "minibotcatcher.__main__:main"
