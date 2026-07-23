@@ -6,9 +6,9 @@ import datetime
 import logging
 import re
 from collections import deque
+from collections.abc import AsyncIterator, Callable, Sequence
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
-from typing import AsyncIterator, Callable, Sequence
 
 import discord
 

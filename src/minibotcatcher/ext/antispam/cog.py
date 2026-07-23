@@ -1,8 +1,9 @@
 import datetime
 import logging
 from collections import defaultdict
+from collections.abc import Iterable
 from contextlib import suppress
-from typing import Iterable, assert_never
+from typing import assert_never
 
 import discord
 from discord.ext import commands
@@ -125,7 +126,7 @@ class AntiSpam(commands.Cog):
 
         async with self.context_cache.acquire(message) as context:
             detection: SpamDetection | None = None
-            for name, check_spam in SPAM_FILTERS.items():
+            for check_spam in SPAM_FILTERS.values():
                 detection = check_spam(context)
                 if detection is not None:
                     break
@@ -150,7 +151,7 @@ class AntiSpam(commands.Cog):
 
         if DEBUG_SKIP_ADMIN_CHECK:
             pass
-        elif author.top_role >= author.guild.me.top_role:
+        elif author.top_role >= author.guild.me.top_role:  # noqa: SIM114
             return False
         elif author.guild_permissions & ADMIN_PERMISSIONS:
             return False
