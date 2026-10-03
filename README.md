@@ -230,6 +230,4 @@ The following actions can be performed when a bot triggers the spam filter:
 
 ## License
 
-This project is written under the [MIT License].
-
-[MIT License]: /LICENSE
+This project is written under the [MIT License](https://github.com/thegamecracks/minibotcatcher/blob/main/LICENSE).
