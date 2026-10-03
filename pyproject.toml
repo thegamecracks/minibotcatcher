@@ -12,11 +12,10 @@ license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "thegamecracks" }]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: End Users/Desktop",
     "Operating System :: OS Independent",
-    "Private :: Do Not Upload",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
