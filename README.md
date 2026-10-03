@@ -112,11 +112,6 @@ The following environment variables are supported:
 With manual setup, the bot can automatically load environment variables from a `.env` file.
 On Docker, the equivalent would be `docker run --env-file .env minibotcatcher`.
 
-> [!WARNING]
->
-> The above configuration options are not yet stable,
-> and are subject to change in a future release.
-
 ## Intents
 
 Before you start the bot, consider enabling the **Message Content** intent
