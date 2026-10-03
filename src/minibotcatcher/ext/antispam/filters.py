@@ -263,4 +263,4 @@ class SpamDetection:
 
 def _can_send_in_channel(channel: discord.abc.MessageableChannel) -> bool:
     assert channel.guild is not None
-    return channel.permissions_for(channel.guild.me).send_messages
+    return channel.permissions_for(channel.guild.me).send_messages  # type: ignore
