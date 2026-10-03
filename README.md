@@ -22,9 +22,9 @@ See the [Usage](#usage) section for all features.
 - [minibotcatcher](#minibotcatcher)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
+    - [PyPI](#pypi)
     - [Docker](#docker)
-    - [Manual setup (python+pip)](#manual-setup-pythonpip)
-    - [Manual setup (uv)](#manual-setup-uv)
+    - [From source](#from-source)
   - [Configuration](#configuration)
   - [Intents](#intents)
   - [Usage](#usage)
@@ -35,6 +35,38 @@ See the [Usage](#usage) section for all features.
   - [License](#license)
 
 ## Installation
+
+### PyPI
+
+The minimum required [Python](https://www.python.org/) version is **3.14**.
+It is highly recommended to install the project and its dependencies
+inside a [virtual environment](https://docs.python.org/3/library/venv.html),
+or with [pipx](https://pipx.pypa.io/latest/index.html) or [uv](https://docs.astral.sh/uv/guides/tools/):
+
+```sh
+# Using venv:
+$ python -m venv .venv
+$ source .venv/bin/activate  # Windows: .venv\Scripts\activate
+(.venv) $ pip install minibotcatcher
+# Using pipx:
+$ pipx install minibotcatcher
+# Using uv:
+$ uv tool install minibotcatcher
+```
+
+Afterwards to run minibotcatcher, you need to set your bot token as an environment variable
+or inside a .env file where the installed script lives, or in any of the directories
+above it (see [python-dotenv](https://saurabh-kumar.com/python-dotenv/)):
+
+```sh
+$ BOT_TOKEN=abc123 minibotcatcher
+# or:
+$ export BOT_TOKEN=abc123
+$ minibotcatcher
+# or, assuming minibotcatcher lives in a subdirectory of home like ~/.local/bin/:
+$ echo 'BOT_TOKEN=abc123' >> ~/.env
+$ minibotcatcher
+```
 
 ### Docker
 
@@ -60,11 +92,9 @@ $ docker build -t minibotcatcher .
 $ docker run --rm -it -e BOT_TOKEN=abc123 minibotcatcher
 ```
 
-### Manual setup (python+pip)
+### From source
 
-The minimum required [Python](https://www.python.org/) version is **3.14**.
-It is highly recommended to install the project and its dependencies
-inside a [virtual environment](https://docs.python.org/3/library/venv.html):
+To install this project from source, clone the repository and create your virtual environment:
 
 ```sh
 $ git clone https://github.com/thegamecracks/minibotcatcher
@@ -72,21 +102,20 @@ $ cd minibotcatcher
 $ python -m venv .venv
 $ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 (.venv) $ pip install --editable .
-(.venv) $ echo 'BOT_TOKEN=abc123' > .env  # on Windows, add this file by hand
+(.venv) $ echo 'BOT_TOKEN=abc123' > .env
 (.venv) $ minibotcatcher
 ```
 
-### Manual setup (uv)
-
-If you have Astral [uv](https://docs.astral.sh/uv/) installed,
-the setup becomes a bit simpler:
+With uv, you can use `uv run` to let it manage the virtual environment for you:
 
 ```sh
 $ git clone https://github.com/thegamecracks/minibotcatcher
 $ cd minibotcatcher
-$ echo 'BOT_TOKEN=abc123' > .env  # on Windows, add this file by hand
+$ echo 'BOT_TOKEN=abc123' > .env
 $ uv run --no-dev minibotcatcher
 ```
+
+In this case, uv will automatically pin your dependencies to the project's uv.lock file.
 
 ## Configuration
 
