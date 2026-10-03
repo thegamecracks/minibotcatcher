@@ -1,5 +1,6 @@
 # minibotcatcher
 
+[![](https://img.shields.io/pypi/v/minibotcatcher?style=flat-square&logo=pypi)](https://pypi.org/project/minibotcatcher/)
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/publish.yml?style=flat-square&logo=uv&label=build)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/publish.yml)
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/docker.yml?style=flat-square&logo=docker&label=docker)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/docker.yml)
 [![](https://img.shields.io/github/actions/workflow/status/thegamecracks/minibotcatcher/type-check.yml?style=flat-square&logo=ty&label=types)](https://github.com/thegamecracks/minibotcatcher/actions/workflows/type-check.yml)
