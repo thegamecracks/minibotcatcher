@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "minibotcatcher"
-version = "1.0.0"
+version = "1.0.0.post1"
 description = "A small Discord bot to catch spam bots."
 readme = "README.md"
 requires-python = ">=3.14"
