@@ -6,7 +6,7 @@ import datetime
 import logging
 import re
 from collections import deque
-from collections.abc import AsyncIterator, Callable, Sequence
+from collections.abc import AsyncGenerator, Callable, Sequence
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 
@@ -121,7 +121,7 @@ class SpamContextCache:
         self._cond = asyncio.Condition()
 
     @asynccontextmanager
-    async def acquire(self, message: discord.Message) -> AsyncIterator[SpamContext]:
+    async def acquire(self, message: discord.Message) -> AsyncGenerator[SpamContext]:
         """Acquire the SpamContext for a given message.
 
         If held by another task, wait until the context is released.
